@@ -8,6 +8,7 @@ var session = require("express-session");
 var MongoStore = require("connect-mongo");
 var flash = require("connect-flash");
 require("dotenv").config();
+const passport = require("passport");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 
@@ -16,6 +17,7 @@ mongoose
   .then(() => console.log("Connected!"))
   .catch((err) => console.log(err));
 
+require("./modules/passport");
 var app = express();
 
 // view engine setup
@@ -39,7 +41,11 @@ app.use(
   })
 );
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(flash());
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
